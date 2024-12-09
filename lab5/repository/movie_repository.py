@@ -39,18 +39,18 @@ class MovieRepository:
 
     def add(self, movie: Movie):
         if self.find(movie.get_movie_id()) != -1:
-            raise ValueError("Filmul exista!")
+            raise ValueError("The movie already exists!")
         self.__movies.append(movie)
 
     def update(self, movieupdated: Movie):
         pos = self.find(movieupdated.get_movie_id())
         if pos == -1:
-            raise ValueError("Nu exista filmul cu id-ul mentionat!")
+            raise ValueError("The movie with the given id doesn't exist!")
         self.__movies[pos] = movieupdated
 
     def delete(self, idMovie: int):
         pos = self.find(idMovie)
         if pos == -1:
-            raise ValueError("Nu exista filmul cu id-ul mentionat!")
+            raise ValueError("The movie with the given id doesn't exist!")
         del self.__movies[pos]
 
