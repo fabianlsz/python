@@ -22,7 +22,7 @@ class UserRepository:
             pass
         self.users = users
 
-    def get_all(self) -> list:
+    def get_all(self):
         return self.users
 
     def gen_id_user(self):
@@ -36,20 +36,20 @@ class UserRepository:
 
     def add(self, user: User):
         if self.find(user.get_user_id()) != -1:
-            raise ValueError("Utilizatorul exista deja!")
+            raise ValueError("This user exists already!")
         self.users.append(user)
         self.__save()
 
     def update(self, userupdated: User):
         pos = self.find(userupdated.get_user_id())
         if pos == -1:
-            raise ValueError("Nu exista utilizatorul cu id-ul mentionat!")
+            raise ValueError("The user with the given id doesn't exist!")
         self.users[pos] = userupdated
         self.__save()
 
     def delete(self, iduser: int):
         pos = self.find(iduser)
         if pos == -1:
-            raise ValueError("Nu exista utilizatorul cu id-ul mentionat!")
+            raise ValueError("The user with the given id doesn't exist!")
         del self.users[pos]
         self.__save()
