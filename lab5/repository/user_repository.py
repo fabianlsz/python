@@ -1,0 +1,55 @@
+from domain.user_domain import User
+
+class UserRepository:
+    def __init__(self, file_path):
+        self.users = []
+        self.file_path = file_path
+        self.__load()
+
+    def __save(self):
+        with open(self.file_path, "w") as file:
+            for user in self.get_all():
+                file.write(f"{user.user_id},{user.name},{user.age}\n")
+
+    def __load(self):
+        users = []
+        try:
+            with open(self.file_path, "r") as file:
+                for line in file:
+                    user_id, name, age = line.strip().split(",")
+                    users.append(User(int(user_id), name, int(age)))
+        except FileNotFoundError:
+            pass
+        self.users = users
+
+    def get_all(self) -> list:
+        return self.users
+
+    def gen_id_user(self):
+        return max([e.user_id for e in self.users], default=0) + 1
+
+    def find(self, user_id):
+        for index, user in enumerate(self.users):
+            if user.get_user_id() == user_id:
+                return index
+        return -1
+
+    def add(self, user: User):
+        if self.find(user.get_user_id()) != -1:
+            raise ValueError("Utilizatorul exista deja!")
+        self.users.append(user)
+        self.__save()
+
+    def update(self, userupdated: User):
+        pos = self.find(userupdated.get_user_id())
+        if pos == -1:
+            raise ValueError("Nu exista utilizatorul cu id-ul mentionat!")
+        self.users[pos] = userupdated
+        self.__save()
+
+    def delete(self, iduser: int):
+        pos = self.find(iduser)
+        if pos == -1:
+            raise ValueError("Nu exista utilizatorul cu id-ul mentionat!")
+        del self.users[pos]
+        self.__save()
