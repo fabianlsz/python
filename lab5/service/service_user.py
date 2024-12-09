@@ -16,6 +16,7 @@ class Service_user:
 
     def remove_user(self, iduser: int):
         self.UserRepository.delete(iduser)
-
-    def update_user(self, iduser):
-        self.UserRepository.update(iduser)
+    #
+    # def update_user(self, iduser):
+    #     self.UserRepository.update(iduser)
+# muie steaua
