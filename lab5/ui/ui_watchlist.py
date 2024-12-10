@@ -29,7 +29,7 @@ def add_watchlist(service):
 def edit_watchlist(service):
     try:
         watchlist_id = int(input("Enter the watchlist ID to edit: "))
-        movie_ids = list(map(int, input("Enter new movie IDs (comma-separated): ").split(",")))
+        new_movie_id = list(map(int, input("Enter new movie IDs to add (comma-separated): ").split(",")))
         watchlist = None
         for w in service.get_watchlists():
             if w.watchlist_id == watchlist_id:
@@ -38,7 +38,9 @@ def edit_watchlist(service):
         if not watchlist:
             print("Watchlist not found!")
             return
-        watchlist.movie_ids = movie_ids
+        updated_movie_id = list(set(watchlist.movie_id + new_movie_id))
+        watchlist.movie_id = updated_movie_id
+
         service.update_watchlist(watchlist)
         print("Watchlist updated successfully!")
     except ValueError as e:

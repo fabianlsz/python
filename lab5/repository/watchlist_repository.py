@@ -10,19 +10,29 @@ class WatchlistRepository:
     def __save(self):
         with open(self.file_path, "w") as file:
             for watchlist in self.watchlists:
-                movie_ids_str = ",".join(map(str, watchlist.movie_id))
-                file.write(f"{watchlist.watchlist_id},{watchlist.user_id},{movie_ids_str}\n")
+                movie_id = ";".join(map(str, watchlist.movie_id))
+                file.write(f"{watchlist.watchlist_id},{watchlist.user_id}:{movie_id}\n")
 
     def __load(self):
         watchlists = []
         try:
             with open(self.file_path, "r") as file:
                 for line in file:
-                    watchlist_id_user, movie_ids = line.strip().split(":")
-                    watchlist_id, user_id = map(int, watchlist_id_user.split(","))
-                    movie_ids_list = list(map(int, movie_ids.split(";"))) if movie_ids else []
-                    watchlist = Watchlist(watchlist_id, user_id, movie_ids_list)
-                    watchlists.append(watchlist)
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        parts = line.split(",")
+                        if len(parts) < 2:
+                            print(f"Skipping invalid line: {line}")
+                            continue
+                        watchlist_id = int(parts[0])
+                        user_id = int(parts[1])
+                        movie_ids_list = list(map(int, parts[2:]))
+                        watchlist = Watchlist(watchlist_id, user_id, movie_ids_list)
+                        watchlists.append(watchlist)
+                    except ValueError as e:
+                        print(f"Skipping invalid line (could not parse values): {line}, Error: {e}")
         except FileNotFoundError:
             pass
         self.watchlists = watchlists
@@ -43,12 +53,13 @@ class WatchlistRepository:
         self.watchlists.append(watchlist)
         self.__save()
 
-    def update(self, watchlistUpdated: Watchlist):
-        pos = self.find(watchlistUpdated.watchlist_id)
-        if pos == -1:
-            raise ValueError("The watchlist with the given ID doesn't exist!")
-        self.watchlists[pos] = watchlistUpdated
-        self.__save()
+    def update(self, updated_watchlist: Watchlist):
+        for idx, watchlist in enumerate(self.watchlists):
+            if watchlist.watchlist_id == updated_watchlist.watchlist_id:
+                self.watchlists[idx] = updated_watchlist
+                self.__save()
+                return
+        raise ValueError("Watchlist not found!")
 
     def delete(self, idwatchlist: int):
         pos = self.find(idwatchlist)
