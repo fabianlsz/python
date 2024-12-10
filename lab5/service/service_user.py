@@ -3,7 +3,7 @@ from domain.user_domain import User
 from repository.user_repository import UserRepository
 
 
-class Service_user:
+class Service_User:
     def __init__(self, validator: Validation, repoUser: UserRepository):
         self.Validator = validator
         self.UserRepository = repoUser

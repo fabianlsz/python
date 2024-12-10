@@ -1,10 +1,9 @@
 from datetime import datetime
-from functools import reduce
 from domain.validation import Validation
 from repository.movie_repository import MovieRepository
 from domain.movie_domain import Movie
 
-class Service:
+class service_movies:
     def __init__(self, validator: Validation, repoMovie: MovieRepository):
         self.validator = validator
         self.MovieRepository = repoMovie
@@ -24,19 +23,5 @@ class Service:
     def update_movie(self, updated_movie: Movie):
         self.MovieRepository.update(updated_movie)
 
-    def get_movie(self):
+    def get_movies(self):
         return self.MovieRepository.get_all()
-
-    def filter_movies_by_actor(self, movies: list, actor: str):
-        return list(filter(lambda m: actor in m.actors, movies))
-
-    def filter_movies_by_rating(self, movies: list, rating: float):
-        return list(filter(lambda m: m.imdb_rating > rating, movies))
-
-    def count_movies_by_actor(self, movies: list, actor: str):
-        return sum(map(lambda m: actor in m.actors, movies))
-
-    def average_rating_by_actor(self, movies: list, actor: str):
-        relevant_movies = list(filter(lambda m: actor in m.actors, movies))
-        total_rating = reduce(lambda acc, m: acc + m.imdb_rating, relevant_movies, 0)
-        return total_rating / len(relevant_movies) if relevant_movies else 0

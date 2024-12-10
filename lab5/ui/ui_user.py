@@ -1,6 +1,6 @@
 from domain.user_domain import User
 from repository.user_repository import UserRepository
-from service.service_user import Service_user
+from service.service_user import Service_User
 from domain.validation import Validation
 
 def show_menu():
@@ -11,8 +11,8 @@ def show_menu():
     print("4. Update a user")
     print("5. Exit")
 
-def show_all_users(service_user):
-    users = service_user.get_users()
+def show_all_users(Service_User):
+    users = Service_User.get_users()
     if not users:
         print("No users available.")
     else:
@@ -51,7 +51,7 @@ def main():
     file_path = "users.txt"
     validator = Validation()
     user_repository = UserRepository(file_path)
-    service_user = Service_user(validator, user_repository)
+    service_user = Service_User(validator, user_repository)
 
     while True:
         show_menu()

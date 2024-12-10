@@ -1,7 +1,7 @@
 from domain.user_domain import User
 from repository.user_repository import UserRepository
 from domain.validation import Validation
-from service.service_user import Service_user
+from service.service_user import Service_User
 
 
 class Bataiedejoc(Validation):
@@ -14,7 +14,7 @@ def test_add_user():
     test_file_path = "test_users.txt"
     validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
-    service = Service_user(validator, repo)
+    service = Service_User(validator, repo)
 
     service.add_user("John Doe", 30)
     all_users = repo.get_all()
@@ -30,7 +30,7 @@ def test_get_all_users():
     test_file_path = "test_users.txt"
     validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
-    service = Service_user(validator, repo)
+    service = Service_User(validator, repo)
 
     service.add_user("John Doe", 30)
     service.add_user("Jane Smith", 25)
@@ -47,7 +47,7 @@ def test_remove_user():
     test_file_path = "test_users.txt"
     validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
-    service = Service_user(validator, repo)
+    service = Service_User(validator, repo)
 
     service.add_user("John Doe", 30)
     service.add_user("Jane Smith", 25)
@@ -68,7 +68,7 @@ def test_update_user():
     test_file_path = "test_users.txt"
     validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
-    service = Service_user(validator, repo)
+    service = Service_User(validator, repo)
 
     service.add_user("John Doe", 30)
     all_users = repo.get_all()

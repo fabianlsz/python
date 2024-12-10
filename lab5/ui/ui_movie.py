@@ -1,7 +1,7 @@
 from datetime import datetime
 from domain.movie_domain import Movie
 from repository.movie_repository import MovieRepository
-from service.service_movie import Service
+from service.service_movies import service_movies
 from domain.validation import Validation
 
 def show_movie_menu():
@@ -17,7 +17,7 @@ def show_movie_menu():
     print("9. Exit")
 
 def show_all_movies(service_movie):
-    movies = service_movie.get_movie()
+    movies = service_movie.get_movies()
     if not movies:
         print("No movies available.")
     else:
@@ -49,7 +49,7 @@ def remove_movie(service_movie):
 def update_movie(service_movie):
     try:
         movie_id = int(input("Enter movie ID to update: "))
-        movie_to_update = next((movie for movie in service_movie.get_movie() if movie.movie_id == movie_id), None)
+        movie_to_update = next((movie for movie in service_movie.get_movies() if movie.movie_id == movie_id), None)
 
         if not movie_to_update:
             print("Movie not found!")
@@ -81,50 +81,11 @@ def update_movie(service_movie):
     except ValueError as e:
         print(f"Error: {e}")
 
-
-def filter_movies_by_actor(service_movie):
-    actor = input("Enter actor name: ")
-    movies = service_movie.get_movie()
-    filtered_movies = service_movie.filter_movies_by_actor(movies, actor)
-    if not filtered_movies:
-        print(f"No movies found with actor: {actor}")
-    else:
-        for movie in filtered_movies:
-            print(f"ID:{movie.movie_id}, Title:{movie.title}")
-
-def filter_movies_by_rating(service_movie):
-    try:
-        rating = float(input("Enter IMDb rating threshold: "))
-        movies = service_movie.get_movie()
-        filtered_movies = service_movie.filter_movies_by_rating(movies, rating)
-        if not filtered_movies:
-            print(f"No movies found with IMDb rating greater than {rating}.")
-        else:
-            for movie in filtered_movies:
-                print(f"ID:{movie.movie_id}, Title:{movie.title}, IMDb:{movie.imdb_rating}")
-    except ValueError as e:
-        print(f"Error: {e}")
-
-def count_movies_by_actor(service_movie):
-    actor = input("Enter actor name: ")
-    movies = service_movie.get_movie()
-    count = service_movie.count_movies_by_actor(movies, actor)
-    print(f"Movies with actor {actor}: {count}")
-
-def average_rating_by_actor(service_movie):
-    actor = input("Enter actor name: ")
-    movies = service_movie.get_movie()
-    average_rating = service_movie.average_rating_by_actor(movies, actor)
-    if average_rating == 0:
-        print(f"No movies found with actor: {actor}")
-    else:
-        print(f"Average IMDb rating for movies with actor {actor}: {average_rating:.2f}") #2 decimale pentru calcul
-
 def main():
     file_path = "movies.txt"
     validator = Validation()
     movie_repository = MovieRepository(file_path)
-    service_movie = Service(validator, movie_repository)
+    service_movie = service_movies(validator, movie_repository)
 
     while True:
         show_movie_menu()
@@ -139,14 +100,6 @@ def main():
         elif choice == "4":
             update_movie(service_movie)
         elif choice == "5":
-            filter_movies_by_actor(service_movie)
-        elif choice == "6":
-            filter_movies_by_rating(service_movie)
-        elif choice == "7":
-            count_movies_by_actor(service_movie)
-        elif choice == "8":
-            average_rating_by_actor(service_movie)
-        elif choice == "9":
             print("Exiting the application. Goodbye!")
             break
         else:

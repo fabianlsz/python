@@ -1,5 +1,6 @@
 from domain.movie_domain import Movie
 from domain.user_domain import User
+from domain.watchlist_domain import Watchlist
 
 
 class Validation:
@@ -24,3 +25,13 @@ class Validation:
             erori+= "Nota acordata filmului este invalida!"
         if len(erori) > 0:
             raise ValueError(erori)
+
+    def validator_watchlist(self, watchlist: Watchlist):
+        errors = ""
+        if watchlist.user_id is None or watchlist.user_id <= 0:
+            errors += "Invalid user ID! "
+        if not watchlist.movie_id or not all(isinstance(movieid, int) and movieid > 0 for movieid in watchlist.movie_id):
+            errors += "Invalid movie IDs! "
+        if len(errors) > 0:
+            raise ValueError(errors)
+
