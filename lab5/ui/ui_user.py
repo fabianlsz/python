@@ -17,7 +17,7 @@ def show_all_users(service_user):
         print("No users available.")
     else:
         for user in users:
-            print(f"ID:{user.get_user_id()}, {user.get_name()}, {user.get_age()}")
+            print(f"ID:{user.user_id}, {user.name}, {user.age}")
 
 def add_user(service_user):
     try:

@@ -29,18 +29,18 @@ class UserRepository:
         return max([e.user_id for e in self.users], default=0) + 1
 
     def find(self, user_id):
-        result = list(filter(lambda user: user.get_user_id() == user_id, self.users))
+        result = list(filter(lambda user: user.user_id == user_id, self.users))
         return self.users.index(result[0]) if result else -1
 
 
     def add(self, user: User):
-        if self.find(user.get_user_id()) != -1:
+        if self.find(user.user_id) != -1:
             raise ValueError("This user exists already!")
         self.users.append(user)
         self.__save()
 
     def update(self, userupdated: User):
-        pos = self.find(userupdated.get_user_id())
+        pos = self.find(userupdated.user_id)
         if pos == -1:
             raise ValueError("The user with the given id doesn't exist!")
         self.users[pos] = userupdated

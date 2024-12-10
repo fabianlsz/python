@@ -1,27 +1,32 @@
 class User:
-    def __init__(self,user_id,name,age):
-        self.user_id = user_id
-        self.name = name
-        self.age = age
+    def __init__(self, user_id, name, age):
+        self._user_id = user_id
+        self._name = name
+        self._age = age
 
+    @property
+    def user_id(self):
+        return self._user_id
 
-    def get_user_id(self):
-        return self.user_id
+    @user_id.setter
+    def user_id(self, value):
+        self._user_id = value
 
-    def set_user_id(self, value):
-        self.user_id = value
+    @property
+    def name(self):
+        return self._name
 
-    def get_name(self):
-        return self.name
+    @name.setter
+    def name(self, value):
+        self._name = value
 
-    def set_name(self, value):
-        self.name = value
+    @property
+    def age(self):
+        return self._age
 
-    def get_age(self):
-        return self.age
-
-    def set_age(self, value):
-        self.age = value
+    @age.setter
+    def age(self, value):
+        self._age = value
 
     def __str__(self):
-        return f"User[ID={self.user_id}, Name={self.name}, Age{self.age}]"
+        return f"User[ID={self.user_id}, Name={self.name}, Age={self.age}]"
