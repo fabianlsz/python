@@ -29,10 +29,9 @@ class UserRepository:
         return max([e.user_id for e in self.users], default=0) + 1
 
     def find(self, user_id):
-        for index, user in enumerate(self.users):
-            if user.get_user_id() == user_id:
-                return index
-        return -1
+        result = list(filter(lambda user: user.get_user_id() == user_id, self.users))
+        return self.users.index(result[0]) if result else -1
+
 
     def add(self, user: User):
         if self.find(user.get_user_id()) != -1:
