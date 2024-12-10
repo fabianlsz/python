@@ -13,15 +13,14 @@ class ServiceWatchlist:
         self.MovieRepository = repoMovieRepository
         self.UserRepository = repoUserRepository
 
-    def add_watchlist(self, user_id: int, movie_ids: list):
-
+    def add_watchlist(self, user_id: int, movie_id: list):
         for watchlist in self.WatchlistRepository.get_all():
-            if watchlist.user_id == user_id and watchlist.movie_ids == movie_ids:
+            if watchlist.user_id == user_id or watchlist.movie_id == movie_id:
                 raise ValueError("The watchlist already exists for this user!")
-
         new_watchlist_id = self.WatchlistRepository.gen_id_watchlist()
-        new_watchlist = Watchlist(new_watchlist_id, user_id, movie_ids)
+        new_watchlist = Watchlist(new_watchlist_id, user_id, movie_id)
         self.Validator.validator_watchlist(new_watchlist)
+        self.WatchlistRepository.add(new_watchlist)
 
     def remove_watchlist(self, watchlist_id: int):
         self.WatchlistRepository.delete(watchlist_id)

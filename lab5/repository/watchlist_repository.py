@@ -9,9 +9,9 @@ class WatchlistRepository:
 
     def __save(self):
         with open(self.file_path, "w") as file:
-            for watchlist in self.get_all():
-                movie_id = ";".join(map(str, watchlist.movie_ids))
-                file.write(f"{watchlist.watchlist_id},{watchlist.user_id}:{movie_id}\n")
+            for watchlist in self.watchlists:
+                movie_ids_str = ",".join(map(str, watchlist.movie_id))
+                file.write(f"{watchlist.watchlist_id},{watchlist.user_id},{movie_ids_str}\n")
 
     def __load(self):
         watchlists = []

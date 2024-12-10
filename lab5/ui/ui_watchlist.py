@@ -7,13 +7,14 @@ from repository.movie_repository import MovieRepository
 def show_watchlist_menu():
     print("\nWatchlist Management Menu:")
     print("1. Add a movie to a user's watchlist")
-    print("2. Edit a watchlist")
-    print("3. Filter movies by actor")
-    print("4. Filter movies by IMDb rating")
-    print("5. Count movies an actor appeared in")
-    print("6. Calculate the average IMDb rating of movies an actor appeared in")
-    print("7. Show all watchlists")
-    print("8. Exit")
+    print("2. Show all watchlists")
+    print("3. Edit a watchlist")
+    print("4. Remove a watchlist")
+    print("5. Filter movies by actor")
+    print("6. Filter movies by IMDb rating")
+    print("7. Count movies an actor appeared in")
+    print("8. Calculate the average IMDb rating of movies an actor appeared in")
+    print("9. Exit")
 
 def add_watchlist(service):
     try:
@@ -24,14 +25,34 @@ def add_watchlist(service):
     except ValueError as e:
         print(f"Error: {e}")
 
+
 def edit_watchlist(service):
     try:
         watchlist_id = int(input("Enter the watchlist ID to edit: "))
         movie_ids = list(map(int, input("Enter new movie IDs (comma-separated): ").split(",")))
-        service.update_watchlist(watchlist_id, movie_ids)
+        watchlist = None
+        for w in service.get_watchlists():
+            if w.watchlist_id == watchlist_id:
+                watchlist = w
+                break
+        if not watchlist:
+            print("Watchlist not found!")
+            return
+        watchlist.movie_ids = movie_ids
+        service.update_watchlist(watchlist)
         print("Watchlist updated successfully!")
     except ValueError as e:
         print(f"Error: {e}")
+
+
+def remove_watchlist(service):
+    try:
+        watchlist_id = int(input("Enter the watchlist ID to remove: "))
+        service.remove_watchlist(watchlist_id)
+        print("Watchlist removed successfully!")
+    except ValueError as e:
+        print(f"Error: {e}")
+
 
 def filter_movies_by_actor(service):
     actor = input("Enter the actor's name: ")
@@ -69,20 +90,30 @@ def calculate_avg_rating_by_actor(service):
     else:
         print(f"The average IMDb rating of movies featuring {actor} is {avg_rating:.2f}.")
 
-def show_all_watchlists(service):
+
+def show_all_watchlists(service, user_repo, movie_repo):
     watchlists = service.get_watchlists()
+
     if not watchlists:
         print("No watchlists available.")
     else:
         for watchlist in watchlists:
-            print(watchlist)
+            user_name = user_repo.get_all()[
+                watchlist.user_id - 1].name
+            movie_titles = [movie_repo.get_all()[movie_id - 1].title for movie_id in watchlist.movie_id]
+
+            movie_titles_str = ', '.join(movie_titles)
+
+            print(
+                f"Watchlist ID: {watchlist.watchlist_id}, User ID: {watchlist.user_id} - Name: {user_name}, Movies: \"{movie_titles_str}\"")
+
 
 def main():
     movie_repo = MovieRepository("movies.txt")
     validator = Validation()
     user_repo = UserRepository("users.txt")
     watchlist_repo = WatchlistRepository("watchlists.txt")
-    watchlist_service = ServiceWatchlist(validator,watchlist_repo, movie_repo, user_repo)
+    watchlist_service = ServiceWatchlist(validator, watchlist_repo, movie_repo, user_repo)
 
     while True:
         show_watchlist_menu()
@@ -91,18 +122,20 @@ def main():
         if choice == "1":
             add_watchlist(watchlist_service)
         elif choice == "2":
-            edit_watchlist(watchlist_service)
+            show_all_watchlists(watchlist_service, user_repo, movie_repo)
         elif choice == "3":
-            filter_movies_by_actor(watchlist_service)
+            edit_watchlist(watchlist_service)
         elif choice == "4":
-            filter_movies_by_rating(watchlist_service)
+            remove_watchlist(watchlist_service)
         elif choice == "5":
-            count_movies_by_actor(watchlist_service)
+            filter_movies_by_actor(watchlist_service)
         elif choice == "6":
-            calculate_avg_rating_by_actor(watchlist_service)
+            filter_movies_by_rating(watchlist_service)
         elif choice == "7":
-            show_all_watchlists(watchlist_service)
+            count_movies_by_actor(watchlist_service)
         elif choice == "8":
+            calculate_avg_rating_by_actor(watchlist_service)
+        elif choice == "9":
             print("Exiting Watchlist Management. Goodbye!")
             break
         else:
