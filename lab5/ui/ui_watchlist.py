@@ -4,6 +4,7 @@ from repository.watchlist_repository import WatchlistRepository
 from service.service_watchlist import ServiceWatchlist
 from repository.movie_repository import MovieRepository
 
+
 def show_watchlist_menu():
     print("\nWatchlist Management Menu:")
     print("1. Add a movie to a user's watchlist")
@@ -15,6 +16,7 @@ def show_watchlist_menu():
     print("7. Count movies an actor appeared in")
     print("8. Calculate the average IMDb rating of movies an actor appeared in")
     print("9. Exit")
+
 
 def add_watchlist(service):
     try:
@@ -66,6 +68,7 @@ def filter_movies_by_actor(service):
         for movie in filtered_movies:
             print(movie)
 
+
 def filter_movies_by_rating(service):
     try:
         rating = float(input("Enter the minimum IMDb rating: "))
@@ -79,10 +82,12 @@ def filter_movies_by_rating(service):
     except ValueError as e:
         print(f"Error: {e}")
 
+
 def count_movies_by_actor(service):
     actor = input("Enter the actor's name: ")
     count = service.count_movies_by_actor(actor)
     print(f"{actor} appeared in {count} movie(s).")
+
 
 def calculate_avg_rating_by_actor(service):
     actor = input("Enter the actor's name: ")
@@ -110,7 +115,7 @@ def show_all_watchlists(service, user_repo, movie_repo):
                 f"Watchlist ID: {watchlist.watchlist_id}, User ID: {watchlist.user_id} - Name: {user_name}, Movies: \"{movie_titles_str}\"")
 
 
-def main():
+def watchlist_menu():
     movie_repo = MovieRepository("movies.txt")
     validator = Validation()
     user_repo = UserRepository("users.txt")
@@ -142,6 +147,3 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-    main()

@@ -47,7 +47,7 @@ def update_user(service_user):
     except ValueError as e:
         print(f"Error: {e}")
 
-def main():
+def user_menu():
     file_path = "users.txt"
     validator = Validation()
     user_repository = UserRepository(file_path)
@@ -71,5 +71,3 @@ def main():
         else:
             print("Invalid choice. Please try again.")
 
-if __name__ == "__main__":
-    main()

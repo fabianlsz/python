@@ -81,7 +81,7 @@ def update_movie(service_movie):
     except ValueError as e:
         print(f"Error: {e}")
 
-def main():
+def movie_menu():
     file_path = "movies.txt"
     validator = Validation()
     movie_repository = MovieRepository(file_path)
@@ -104,6 +104,3 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-    main()
