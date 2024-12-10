@@ -10,8 +10,8 @@ class WatchlistRepository:
     def __save(self):
         with open(self.file_path, "w") as file:
             for watchlist in self.watchlists:
-                movie_id = ";".join(map(str, watchlist.movie_id))
-                file.write(f"{watchlist.watchlist_id},{watchlist.user_id}:{movie_id}\n")
+                movie_id = ",".join(map(str, watchlist.movie_id))
+                file.write(f"{watchlist.watchlist_id},{watchlist.user_id},{movie_id}\n")
 
     def __load(self):
         watchlists = []
@@ -23,7 +23,7 @@ class WatchlistRepository:
                         continue
                     try:
                         parts = line.split(",")
-                        if len(parts) < 2:
+                        if len(parts) < 3:
                             print(f"Skipping invalid line: {line}")
                             continue
                         watchlist_id = int(parts[0])
