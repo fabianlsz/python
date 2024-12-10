@@ -48,3 +48,4 @@ class ServiceWatchlist:
         relevant_movies = list(filter(lambda m: actor in m.actors, movies))
         total_rating = reduce(lambda acc, m: acc + m.imdb_rating, relevant_movies, 0)
         return total_rating / len(relevant_movies) if relevant_movies else 0
+

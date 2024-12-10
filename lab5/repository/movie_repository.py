@@ -59,3 +59,4 @@ class MovieRepository:
             raise ValueError("The movie with the given id doesn't exist!")
         del self.movies[pos]
         self.__save(self.movies)
+

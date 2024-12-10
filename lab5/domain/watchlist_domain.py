@@ -14,3 +14,4 @@ class Watchlist:
 
     def __str__(self):
         return f"Watchlist[ID={self.watchlist_id}, UserID={self.user_id}, Movies={self.movie_id}]"
+

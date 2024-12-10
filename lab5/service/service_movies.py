@@ -25,3 +25,4 @@ class service_movies:
 
     def get_movies(self):
         return self.MovieRepository.get_all()
+
