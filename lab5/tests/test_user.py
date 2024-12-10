@@ -4,7 +4,7 @@ from domain.validation import Validation
 from service.service_user import Service_user
 
 
-class bataiedejoc(Validation):
+class Bataiedejoc(Validation):
     def validator_user(self, user: User):
         if not isinstance(user.age, int) or user.age <= 0:
             raise ValueError("Age must be a positive integer")
@@ -12,7 +12,7 @@ class bataiedejoc(Validation):
 
 def test_add_user():
     test_file_path = "test_users.txt"
-    validator = bataiedejoc()
+    validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
     service = Service_user(validator, repo)
 
@@ -28,7 +28,7 @@ def test_add_user():
 
 def test_get_all_users():
     test_file_path = "test_users.txt"
-    validator = bataiedejoc()
+    validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
     service = Service_user(validator, repo)
 
@@ -45,7 +45,7 @@ def test_get_all_users():
 
 def test_remove_user():
     test_file_path = "test_users.txt"
-    validator = bataiedejoc()
+    validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
     service = Service_user(validator, repo)
 
@@ -55,10 +55,8 @@ def test_remove_user():
 
     assert len(all_users) == 2
 
-
     service.remove_user(all_users[0].user_id)
     all_users = repo.get_all()
-
 
     assert len(all_users) == 1
     assert all_users[0].name == "Jane Smith"
@@ -68,15 +66,13 @@ def test_remove_user():
 
 def test_update_user():
     test_file_path = "test_users.txt"
-    validator = bataiedejoc()
+    validator = Bataiedejoc()
     repo = UserRepository(test_file_path)
     service = Service_user(validator, repo)
-
 
     service.add_user("John Doe", 30)
     all_users = repo.get_all()
     user_to_update = all_users[0]
-
 
     updated_user = User(user_to_update.user_id, "John Updated", 35)
     repo.update(updated_user)
@@ -85,7 +81,6 @@ def test_update_user():
     assert len(all_users) == 1
     assert all_users[0].name == "John Updated"
     assert all_users[0].age == 35
-
     cleanup(test_file_path)
 
 
@@ -104,3 +99,4 @@ if __name__ == "__main__":
     print("test_remove_user passed")
     test_update_user()
     print("test_update_user passed")
+
