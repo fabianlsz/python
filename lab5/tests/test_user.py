@@ -99,5 +99,3 @@ if __name__ == "__main__":
     print("test_remove_user passed")
     test_update_user()
     print("test_update_user passed")
-
-

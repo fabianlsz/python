@@ -10,11 +10,7 @@ def show_movie_menu():
     print("2. Add a movie")
     print("3. Remove a movie")
     print("4. Update a movie")
-    print("5. Filter movies by actor")
-    print("6. Filter movies by IMDb rating")
-    print("7. Count movies by actor")
-    print("8. Average IMDb rating by actor")
-    print("9. Exit")
+    print("5. Exit")
 
 def show_all_movies(service_movie):
     movies = service_movie.get_movies()
@@ -104,4 +100,3 @@ def movie_menu():
             break
         else:
             print("Invalid choice. Please try again.")
-

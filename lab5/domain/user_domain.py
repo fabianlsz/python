@@ -30,4 +30,3 @@ class User:
 
     def __str__(self):
         return f"User[ID={self.user_id}, Name={self.name}, Age={self.age}]"
-

@@ -24,6 +24,3 @@ class Service_User:
 
     def get_users(self):
         return self.UserRepository.get_all()
-
-
-

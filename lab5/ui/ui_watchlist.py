@@ -147,4 +147,3 @@ def watchlist_menu():
             break
         else:
             print("Invalid choice. Please try again.")
-

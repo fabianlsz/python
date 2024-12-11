@@ -56,4 +56,3 @@ class Movie:
     def __str__(self):
         release_date_str = self.release_date.strftime("%d-%m-%Y")
         return f"Movie[ID={self.movie_id}, Title={self.title}, Release Date={release_date_str}, IMDb Rating={self.imdb_rating}, Actors={self.actors}]"
-

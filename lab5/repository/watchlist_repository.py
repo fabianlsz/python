@@ -67,4 +67,3 @@ class WatchlistRepository:
             raise ValueError("The watchlist with the given ID doesn't exist!")
         del self.watchlists[pos]
         self.__save()
-

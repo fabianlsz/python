@@ -14,6 +14,7 @@ class MovieRepository:
                 file.write(f"{movie.movie_id},{movie.title},{movie.release_date.strftime('%d-%m-%Y')},{movie.imdb_rating},{actors}\n")
 
     def __load(self):
+        movies = []
         try:
             with open(self.file_path, "r") as file:
                 self.movies = [
@@ -28,13 +29,13 @@ class MovieRepository:
                     for movie_id, title, release_date, imdb_rating, actors in [line.strip().split(",")]
                 ]
         except FileNotFoundError:
-            self.movies = []
+            self.movies = movies
 
     def get_all(self):
         return self.movies
 
     def gen_id_movies(self):
-        return max([e.movie_id for e in self.movies], default=0) + 1
+        return max((movie.movie_id for movie in self.movies), default=0) + 1
 
     def find(self, movie_id):
         result = list(filter(lambda movie: movie.movie_id == movie_id, self.movies))
